@@ -1,0 +1,41 @@
+﻿@using System.Security.Claims;
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+
+@if (User.Identity!.IsAuthenticated)
+{
+    <ul class="navbar-nav me-0">
+
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                @User.Identity.Name
+            </a>
+            <ul class="dropdown-menu">
+
+                <li><a class="dropdown-item" asp-controller="Member" asp-action="Index">Profil</a></li>
+
+                <li><a class="dropdown-item" asp-controller="Member" asp-action="PasswordChange">Şifre Degiştir</a></li>
+
+                <li><a class="dropdown-item" asp-controller="Member" asp-action="UserEdit">Kulanıcı Güncele</a></li>
+
+                <li><a class="dropdown-item" asp-route-returnurl="/Home/Privacy" asp-controller="Member" asp-action="LogOut">Çıkış Yap Privacy</a></li>
+
+                @if (User.HasClaim(x => x.Type == ClaimTypes.Role && x.Value == "admin"))
+                {
+                    <li><a class="dropdown-item" asp-area="Admin" asp-controller="Home" asp-action="Index">Admin</a></li>
+                }
+
+                <li><a class="dropdown-item" asp-route-returnurl="/Home/Index" asp-controller="Member" asp-action="LogOut">Çıkış Yap</a></li>
+
+            </ul>
+        </li>
+    </ul>
+}
+else
+{
+    <a class="btn btn-outline-success mx-1" asp-area="" asp-controller="Home" asp-action="SignUp">Üye Kayıt</a>
+
+    <a class="btn btn-outline-success" asp-area="" asp-controller="Home" asp-action="SignIn">Üye Giriş</a>
+}
